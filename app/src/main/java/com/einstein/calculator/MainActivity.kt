@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
 import com.einstein.calculator.ui.theme.EinsteinCalculatorTheme
 import java.text.NumberFormat
 
@@ -26,7 +27,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EinsteinCalculatorTheme {
-
+//NavHost(){
+//
+//}
                 Scaffold(
                    
                     modifier = Modifier
@@ -39,6 +42,7 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.primary)
                     ) {
+
                         layout()
                     }
                 }
