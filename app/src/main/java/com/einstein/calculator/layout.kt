@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
@@ -64,10 +65,10 @@ fun layout() {
 
         var calculation by remember { mutableStateOf("") }
         var result by remember { mutableStateOf("") }
+        var resultSign by remember { mutableStateOf("") }
         var num1 by remember { mutableStateOf("") }
         var num2 by remember { mutableStateOf("") }
         var operator by remember { mutableStateOf("") }
-
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -130,10 +131,8 @@ fun layout() {
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        //"himan",
-//                        DecimalFormat("#,##0.####")
-//                            .format(num2.toDouble()).toString(),
-                        textView(operator, num2, num1),
+
+                        text = textView(operator, num2, num1),
                         fontSize = 40.sp,
                         textAlign = TextAlign.Right,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -268,7 +267,15 @@ fun layout() {
                     item {
 
                         TextButton(
-                            onClick = {},
+                            onClick = {
+                                if (num1.isNotEmpty()) {
+                                    num1 = num1.dropLast(1)
+                                } else if (operator.isNotEmpty()) {
+                                    operator = operator.dropLast(1)
+                                } else {
+                                    num2 = num2.dropLast(1)
+                                }
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.onSecondary,
                                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -353,13 +360,29 @@ fun layout() {
                     item {
                         Button(
                             onClick = {
-                                num2 = num1
-                                num1 = ""
+//                                num2 = num1
+//                                num1 = ""
                                 if (num2 == "" && num1 == "") {
                                     result = ""
                                 } else {
                                     operator = "÷"
                                 }
+
+                                if (num1.isNotEmpty() && num2.isNotEmpty()) {
+                                    result =
+                                        DecimalFormat("#,##0.####").format(num2.toDouble() / num1.toDouble())
+                                            .toString()
+                                    resultSign = (num2.toDouble() / num1.toDouble()).toString()
+                                    num2 = resultSign
+                                    num1 = ""
+                                } else {
+                                    if (num2.isEmpty() && operator.isNotEmpty()) {
+                                        num2 = num1
+                                        num1 = ""
+                                    }
+//
+                                }
+
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -424,7 +447,11 @@ fun layout() {
                     item {
                         Button(
                             onClick = {
-                                num1 += "."
+                                if (num1.isEmpty()) {
+                                    num1 = ""
+                                } else if (!num1.contains(".")) {
+                                    num1 += "."
+                                }
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.tertiary,
@@ -442,15 +469,31 @@ fun layout() {
                     item {
                         Button(
                             onClick = {
-                                num2 = num1
-                                num1 = ""
+//                                num2 = num1
+//                                num1 = ""
                                 if (num2 == "" && num1 == "") {
                                     result = ""
                                 } else {
-                                    operator = "*"
+                                    operator = "×"
+                                }
+
+                                if (num1.isNotEmpty() && num2.isNotEmpty()) {
+                                    result =
+                                        DecimalFormat("#,##0.####").format(num2.toDouble() * num1.toDouble())
+                                            .toString()
+                                    resultSign = (num2.toDouble() * num1.toDouble()).toString()
+                                    num2 = resultSign
+                                    num1 = ""
+                                } else {
+                                    if (num2.isEmpty() && operator.isNotEmpty()) {
+                                        num2 = num1
+                                        num1 = ""
+                                    }
+//
                                 }
 
                             },
+
 
                             modifier = Modifier,
 
@@ -470,12 +513,26 @@ fun layout() {
                     item {
                         Button(
                             onClick = {
-                                num2 = num1
-                                num1 = ""
+
                                 if (num2 == "" && num1 == "") {
                                     result = ""
                                 } else {
                                     operator = "-"
+                                }
+
+                                if (num1.isNotEmpty() && num2.isNotEmpty()) {
+                                    result =
+                                        DecimalFormat("#,##0.####").format(num2.toDouble() - num1.toDouble())
+                                            .toString()
+                                    resultSign = (num2.toDouble() - num1.toDouble()).toString()
+                                    num2 = resultSign
+                                    num1 = ""
+                                } else {
+                                    if (num2.isEmpty() && operator.isNotEmpty()) {
+                                        num2 = num1
+                                        num1 = ""
+                                    }
+//
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -496,12 +553,26 @@ fun layout() {
                     item {
                         Button(
                             onClick = {
-                                num2 = num1
-                                num1 = ""
+
                                 if (num2 == "" && num1 == "") {
                                     result = ""
                                 } else {
                                     operator = "+"
+                                }
+
+                                if (num1.isNotEmpty() && num2.isNotEmpty()) {
+                                    result =
+                                        DecimalFormat("#,##0.####").format(num2.toDouble() + num1.toDouble())
+                                            .toString()
+                                    resultSign = (num2.toDouble() + num1.toDouble()).toString()
+                                    num2 = resultSign
+                                    num1 = ""
+                                } else {
+                                    if (num2.isEmpty() && operator.isNotEmpty()) {
+                                        num2 = num1
+                                        num1 = ""
+                                    }
+//
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -518,7 +589,7 @@ fun layout() {
                             )
                         }
                     }
-                    item {
+                    item(span = { GridItemSpan(2) }) {
                         Button(
                             onClick = {
                                 var verify = Calculation(operator, num1, num2).removeSuffix(".0")

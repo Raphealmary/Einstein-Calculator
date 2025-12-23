@@ -16,7 +16,7 @@ fun Calculation(operator: String, num1: String, num2: String): String {
         } else {
             return (DecimalFormat("#,##0.####").format(num2.toDouble() - num1.toDouble())).toString()
         }
-    } else if (operator == "*") {
+    } else if (operator == "×") {
         if (num1 == "") {
             return ""
         }
