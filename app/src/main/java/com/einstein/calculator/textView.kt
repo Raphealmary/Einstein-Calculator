@@ -5,7 +5,7 @@ import android.icu.text.NumberFormat
 import java.util.Locale
 
 fun textView(operator: String, num2: String, num1: String): String {
-     val formatter = DecimalFormat("#,##0.##");
+     val formatter = DecimalFormat("#,##0.####");
     //val formatter = NumberFormat.getInstance(Locale.US)
 
     var numberOne: String = ""
